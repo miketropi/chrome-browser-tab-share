@@ -15,6 +15,10 @@ npm run fixtures
 
 Load `apps/extension/dist` through `chrome://extensions` → Developer mode → Load unpacked. Copy its extension ID into `ALLOWED_EXTENSION_IDS`, restart the server, then configure the popup with `http://localhost:3000` and the development host key. Open `http://localhost:4100/tab.html`, select the toolbar action, and start sharing.
 
+![The toolbar panel, showing the selected target, the debugger warning, and the service origin and operator key fields](docs/popup.png)
+
+The toolbar panel names the tab that will be shared, states the privilege a controller receives, and holds the service origin and operator key. Sharing never starts from a saved setting: the panel validates and persists the key, confirms the service authorises this extension build, and only then captures.
+
 The extension build fixes `SERVICE_ORIGIN`; production origin changes require rebuilding:
 
 ```sh
