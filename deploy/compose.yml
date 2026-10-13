@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      PUBLIC_ORIGIN: https://${APP_DOMAIN}
+      ALLOWED_EXTENSION_IDS: ${ALLOWED_EXTENSION_IDS}
+      HOST_ACCESS_KEY: ${HOST_ACCESS_KEY}
+      TURN_HOST: ${TURN_HOST}
+      TURN_SHARED_SECRET: ${TURN_SHARED_SECRET}
+      TURN_TLS_PORT: ${TURN_TLS_PORT:-5349}
+      MAX_GUESTS: ${MAX_GUESTS:-4}
+      MAX_SESSIONS: ${MAX_SESSIONS:-10}
+      SESSION_TTL_SECONDS: ${SESSION_TTL_SECONDS:-7200}
+      INVITE_TTL_SECONDS: ${INVITE_TTL_SECONDS:-600}
+    networks: [web]
+  caddy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [web]
+  coturn:
+    image: coturn/coturn:4.7.0-alpine
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      TURN_HOST: ${TURN_HOST}
+      TURN_SHARED_SECRET: ${TURN_SHARED_SECRET}
+      TURN_LISTEN_IP: ${TURN_LISTEN_IP}
+      TURN_TLS_PORT: ${TURN_TLS_PORT:-5349}
+      TURN_CERT_PATH: ${TURN_CERT_PATH}
+      TURN_KEY_PATH: ${TURN_KEY_PATH}
+    volumes:
+      - ./turnserver.conf.template:/config/turnserver.conf.template:ro
+      - ./turn-entrypoint.sh:/entrypoint.sh:ro
+      - ${TURN_CERT_PATH}:${TURN_CERT_PATH}:ro
+      - ${TURN_KEY_PATH}:${TURN_KEY_PATH}:ro
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+networks:
+  web:
+volumes:
+  caddy_data:
+  caddy_config:

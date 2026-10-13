@@ -1,0 +1,300 @@
+/* Tactical telemetry / CRT terminal substrate for extension surfaces.
+   Dark only, monospace, 90-degree geometry, solid 1px compartment lines. */
+
+:root {
+  --bg: #0a0a0a;
+  --bg-2: #121212;
+  --bg-3: #1a1a1a;
+  --fg: #eaeaea;
+  --dim: #8a8a8a;
+  --line: #2e2e2e;
+  --accent: #e61919;
+  --signal: #4af626;
+  --mono: ui-monospace, "JetBrains Mono", "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 13px/1.4 var(--mono);
+  letter-spacing: 0.02em;
+}
+
+main.crt {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+main.crt.panel {
+  width: 380px;
+  padding: 0;
+}
+
+main.crt.center {
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.label,
+.tag,
+.badge,
+.readout,
+.meta dt,
+.note,
+button,
+.toast,
+.url,
+.code {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.tag {
+  color: var(--dim);
+}
+
+.note {
+  margin: 0;
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.note.danger {
+  color: var(--accent);
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 12px;
+  background: var(--bg-2);
+  color: var(--fg);
+  border: 1px solid var(--line);
+}
+
+button {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--fg);
+}
+
+button.primary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+button.danger {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Disabled state is dimmed but must stay readable. */
+button:disabled {
+  color: var(--dim);
+  border-color: #1e1e1e;
+  background: #0e0e0e;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+}
+
+textarea {
+  min-height: 72px;
+  resize: vertical;
+  overflow-wrap: anywhere;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.panel > * {
+  border-bottom: 1px solid var(--line);
+  padding: 12px;
+  margin: 0;
+}
+
+.head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--bg-2);
+}
+
+.url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badge {
+  padding: 4px 8px;
+  background: var(--bg-3);
+  font-size: 11px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slab {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.slab > * {
+  background: var(--bg-2);
+  padding: 12px;
+  margin: 0;
+}
+
+.slab .label {
+  padding: 8px 12px;
+  background: var(--bg-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  padding: 1px;
+}
+
+.grid button {
+  border: 0;
+  background: var(--bg-2);
+}
+
+/* Grid buttons drop their border, so variants must re-assert their own surface. */
+.grid button.primary {
+  color: var(--accent);
+}
+
+.grid button.danger {
+  background: var(--accent);
+  color: #fff;
+}
+
+.grid button:disabled {
+  background: #0e0e0e;
+  color: var(--dim);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.row button {
+  font-size: 11px;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 12px;
+  margin: 0;
+}
+
+.meta dt {
+  color: var(--dim);
+  font-size: 11px;
+}
+
+.meta dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+samp,
+data {
+  font: inherit;
+  color: var(--fg);
+}
+
+.signal {
+  color: var(--signal);
+}
+
+.code {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.readout {
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.error {
+  display: block;
+  padding: 10px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.qr {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  image-rendering: pixelated;
+  border: 1px solid var(--line);
+}

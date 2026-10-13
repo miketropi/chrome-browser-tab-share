@@ -1,0 +1,21 @@
+{
+  "name": "tab-share",
+  "private": true,
+  "version": "1.0.0",
+  "engines": { "node": ">=24" },
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "build": "npm run build -w @tab-share/protocol && npm run build -w @tab-share/server && npm run build -w @tab-share/web && npm run build -w @tab-share/extension",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "dev": "npm run build -w @tab-share/protocol && npm run build -w @tab-share/extension && concurrently -k 'npm run dev -w @tab-share/server' 'npm run dev -w @tab-share/web'",
+    "fixtures": "concurrently -k 'http-server tests/fixtures -p 4100 -c-1' 'http-server tests/fixtures/frame -p 4101 -a 127.0.0.1 -c-1'"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "concurrently": "^9.2.1",
+    "http-server": "^14.1.1",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
